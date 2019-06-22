@@ -3,6 +3,7 @@ from django.core.exceptions import ValidationError
 from django.core.validators import URLValidator
 from django.shortcuts import render, redirect
 from django.utils import timezone
+from django.views.generic import DetailView
 
 from products.models import Product
 
@@ -40,8 +41,7 @@ def create(request):
             product.pub_date = timezone.datetime.now()
             product.hunter = request.user
             product.save()
-            request.session[KEY_MESSAGE] = 'Product was successfully created'
-            return redirect('home')
+            return redirect('detail', str(product.pk))
         else:
             return render(request, 'products/create.html', {'error': 'All fields are required'})
     else:
@@ -60,3 +60,9 @@ def _validate_url(url):
         return True
     except ValidationError:
         return False
+
+
+class ProductDetailView(DetailView):
+    model = Product
+    template_name = 'products/detail.html'
+    pk_url_kwarg = 'pk'

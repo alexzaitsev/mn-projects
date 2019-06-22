@@ -73,9 +73,9 @@ class CreateProductTests(TestCase):
         No error is provided to 'products/create.html' page.
         """
         url = 'google.com'
-        self.client.post(reverse('create'),
+        response = self.client.post(reverse('create'),
                                     {'title': 'title', 'body': 'body', 'url': url, 'icon': self.image, 'image': self.image})
-        self.assertEqual('Product was successfully created', self.client.session['message'])
+        self.assertEqual(response.status_code, 302)
 
     def test_malformed_url_raises_error(self):
         """
@@ -99,24 +99,18 @@ class CreateProductTests(TestCase):
         last_product = Product.objects.latest('id')
         self.assertEqual(last_product.title, 'title')
 
-    def test_correct_data_adds_message_to_session(self):
-        """
-        If provided data is correct, `message` param
-        is added to session.
-        """
-        self.client.post(reverse('create'),
-                         {'title': 'title', 'body': 'body', 'url': 'google.com', 'icon': self.image,
-                          'image': self.image})
-        self.assertTrue('message' in self.client.session)
-        self.assertEqual('Product was successfully created', self.client.session['message'])
-
-    def test_correct_data_redirects_to_home(self):
+    def test_correct_data_redirects_to_details(self):
         """
         If provided data is correct, the flow is
-        redirected to home page.
+        redirected to product details page.
         """
         response = self.client.post(reverse('create'),
                                     {'title': 'title', 'body': 'body', 'url': 'google.com', 'icon': self.image,
                                     'image': self.image})
+        last_product = Product.objects.latest('id')
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response['Location'], '/')
+        self.assertEqual(response['Location'], f'/products/{last_product.pk}')
+
+
+class DetailTests(TestCase):
+    pass

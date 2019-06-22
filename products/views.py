@@ -1,7 +1,8 @@
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
 from django.core.validators import URLValidator
-from django.shortcuts import render, redirect
+from django.http import Http404
+from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 from django.views.generic import DetailView
 
@@ -66,3 +67,14 @@ class ProductDetailView(DetailView):
     model = Product
     template_name = 'products/detail.html'
     pk_url_kwarg = 'pk'
+
+
+@login_required
+def upvote(request, pk):
+    if request.method == 'POST':
+        product = get_object_or_404(Product, pk=pk)
+        product.votes_total += 1
+        product.save()
+        return redirect('detail', str(pk))
+    else:
+        raise Http404()

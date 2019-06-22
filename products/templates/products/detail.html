@@ -1,10 +1,42 @@
 {% extends 'base.html' %}
 {% block content %}
 
-
-<span>Details</span>
 <br>
-{{ product.title }}
+<div class="row">
+    <div class="col-2">
+        <img src="{{ product.icon.url }}" class="img-fluid"/>
+    </div>
+    <div class="col-10">
+        <a href="{{ product.url }}"><h1>{{ product.title }}</h1></a>
+    </div>
+</div>
+
+<br>
+<div class="row">
+    <div class="col-8">
+        <img src="{{ product.image.url }}" class="img-fluid"/>
+    </div>
+    <div class="col-4">
+        <a href=""><button class="btn btn-primary btn-lg btn-block"><span class="oi oi-caret-top"></span>&nbsp;&nbsp;Upvote {{ product.votes_total }}</button></a>
+    </div>
+</div>
+
+<br>
+<div class="row">
+    <div class="col-8">
+        {{ product.body }}
+    </div>
+</div>
+
+<br>
+<div class="row">
+    <div class="col-4">
+        <strong>Hunted by {{ product.hunter.username }}</strong>
+    </div>
+    <div class="col-4 text-right">
+        <strong>{{ product.pub_date_pretty }}</strong>
+    </div>
+</div>
 
 
 {% endblock %}

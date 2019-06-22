@@ -1,23 +1,26 @@
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
+from django.core.paginator import Paginator
 from django.core.validators import URLValidator
 from django.http import Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
-from django.views.generic import DetailView
+from django.views.generic import DetailView, ListView
 
 from products.models import Product
 
 
-KEY_MESSAGE = 'message'
+class HomeView(ListView):
+    PAGE_SIZE = 5
 
+    template_name = 'products/home.html'
+    context_object_name = 'products'
 
-def home(request):
-    params = {}
-    if KEY_MESSAGE in request.session and request.session[KEY_MESSAGE]:
-        params[KEY_MESSAGE] = request.session[KEY_MESSAGE]
-        del request.session[KEY_MESSAGE]
-    return render(request, 'products/home.html', params)
+    def get_queryset(self):
+        page = self.request.GET.get('page')
+        queryset = Product.objects.all().order_by('-votes_total', '-pub_date')
+        paginator = Paginator(queryset, HomeView.PAGE_SIZE)
+        return paginator.get_page(page)
 
 
 @login_required

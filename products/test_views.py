@@ -1,34 +1,8 @@
-from django.contrib import auth
-from django.core.files.uploadedfile import SimpleUploadedFile
 from django.http import Http404
 from django.test import TestCase
-from django.urls import reverse
-from django.utils import timezone
 
+from producthuntclone.test_utils import *
 from products.models import Product
-
-
-test_image = SimpleUploadedFile('image.png', b'file_content', content_type='image/png')
-
-
-def create_test_user(client):
-    client.post(reverse('signup'), {'username': 'test', 'password1': 'test', 'password2': 'test'})
-
-
-def create_test_product(client):
-    return client.post(reverse('create'),
-                       {'title': 'title', 'body': 'body', 'url': 'google.com', 'icon': test_image,
-                       'image': test_image})
-
-
-def create_test_products_in_range(client, number):
-    for i in range(number):
-        Product.objects.create(title=f'title{i}', pub_date=timezone.datetime.now(),
-                               hunter_id=auth.get_user(client).id)
-
-
-def logout_test_user(client):
-    client.post(reverse('logout'))
 
 
 class HomeTests(TestCase):
@@ -44,7 +18,7 @@ class HomeTests(TestCase):
         self.assertContains(response, 'There are no products yet.')
 
     def test_create_btn_is_shown_if_there_are_no_products_and_user_is_authenticated(self):
-        create_test_user(self.client)
+        create_test_user_with_endpoint(self.client)
         response = self.client.get(reverse('home'))
         self.assertContains(response, 'Create one')
 
@@ -54,14 +28,14 @@ class HomeTests(TestCase):
         self.assertContains(response, 'class="btn btn-primary">Login</a>')
 
     def test_pagination_info_is_shown_if_there_are_more_products_to_show(self):
-        create_test_user(self.client)
+        create_test_user_with_endpoint(self.client)
         create_test_products_in_range(self.client, HomeTests.PAGE_SIZE * 2)
 
         response = self.client.get(reverse('home'))
         self.assertContains(response, 'page 1 of 2')
 
     def test_pagination_info_is_not_shown_if_all_products_are_shown(self):
-        create_test_user(self.client)
+        create_test_user_with_endpoint(self.client)
         create_test_products_in_range(self.client, HomeTests.PAGE_SIZE)
 
         response = self.client.get(reverse('home'))
@@ -72,7 +46,7 @@ class HomeTests(TestCase):
         self.assertNotContains(response, 'page')
 
     def test_first_page_is_shown_if_incorrect_page_is_passed(self):
-        create_test_user(self.client)
+        create_test_user_with_endpoint(self.client)
         create_test_products_in_range(self.client, HomeTests.PAGE_SIZE)
 
         url = f"{reverse('home')}?page=10"
@@ -80,7 +54,7 @@ class HomeTests(TestCase):
         self.assertContains(response, 'TITLE1')
 
     def test_products_are_properly_sorted(self):
-        create_test_user(self.client)
+        create_test_user_with_endpoint(self.client)
         create_test_products_in_range(self.client, HomeTests.PAGE_SIZE)
         Product.objects.filter(title='title3').update(votes_total=3)
         Product.objects.filter(title='title2').update(votes_total=2)
@@ -97,7 +71,7 @@ class HomeTests(TestCase):
 
 class CreateProductTests(TestCase):
     def setUp(self):
-        create_test_user(self.client)
+        create_test_user_with_endpoint(self.client)
 
     def empty_param_raises_error(self, data=None):
         response = self.client.post(reverse('create'), data or {})
@@ -160,7 +134,7 @@ class CreateProductTests(TestCase):
         """
         If provided data is correct, new product is created
         """
-        create_test_product(self.client)
+        create_test_product_with_endpoint(self.client)
         last_product = Product.objects.latest('id')
         self.assertEqual(last_product.title, 'title')
 
@@ -169,7 +143,7 @@ class CreateProductTests(TestCase):
         If provided data is correct, the flow is
         redirected to product details page.
         """
-        response = create_test_product(self.client)
+        response = create_test_product_with_endpoint(self.client)
         last_product = Product.objects.latest('id')
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response['Location'], f'/products/{last_product.pk}')
@@ -180,8 +154,8 @@ class DetailTests(TestCase):
         """
         Upvote button is visible only if user is authenticated
         """
-        create_test_user(self.client)
-        create_test_product(self.client)
+        create_test_user_with_endpoint(self.client)
+        create_test_product_with_endpoint(self.client)
         product = Product.objects.latest('id')
         response = self.client.get(reverse('detail', args=(product.pk,)))
         self.assertContains(response, 'Upvote')
@@ -190,18 +164,18 @@ class DetailTests(TestCase):
         """
         Upvote button is not visible if user is not authenticated
         """
-        create_test_user(self.client)
-        create_test_product(self.client)
+        create_test_user_with_endpoint(self.client)
+        create_test_product_with_endpoint(self.client)
         product = Product.objects.latest('id')
-        logout_test_user(self.client)
+        logout_test_user_with_endpoint(self.client)
         response = self.client.get(reverse('detail', args=(product.pk,)))
         self.assertNotContains(response, 'Upvote')
 
 
 class UpvoteTests(TestCase):
     def setUp(self):
-        create_test_user(self.client)
-        create_test_product(self.client)
+        create_test_user_with_endpoint(self.client)
+        create_test_product_with_endpoint(self.client)
         self.product = Product.objects.latest('id')
 
     def test_get_method_raises_404(self):

@@ -5,7 +5,16 @@
 {% if products %}
     <br>
     {% for product in products %}
-        <a href="{% url 'detail' product.pk %}">{{ product.title|upper }}</a><br>
+        <div class="row">
+            <div class="col-2">
+                <img src="{{ product.icon.url }}" class="img-fluid" height="200"/>
+            </div>
+            <div class="col-10">
+                <h3><a href="{% url 'detail' product.pk %}">{{ product.title|upper }}</a></h3>
+                <p>{{ product.summary }}</p>
+            </div>
+        </div>
+        <br>
     {% endfor %}
 
     {% if products.has_previous or products.has_next %}

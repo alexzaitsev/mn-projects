@@ -1,0 +1,2 @@
+# freeze
+cd /env/bin && ./python pip freeze > ../../requirements.txt && cd ../..

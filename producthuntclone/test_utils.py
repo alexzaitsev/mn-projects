@@ -8,8 +8,8 @@ from products.models import Product
 test_image = SimpleUploadedFile('image.png', b'file_content', content_type='image/png')
 
 
-def create_test_user_with_endpoint(client):
-    client.post(reverse('signup'), {'username': 'test', 'password1': 'test', 'password2': 'test'})
+def create_test_user_with_endpoint(client, username='test', password='test'):
+    client.post(reverse('signup'), {'username': username, 'password1': password, 'password2': password})
 
 
 def create_test_product_with_endpoint(client, title='title', body='body', url='google.com'):

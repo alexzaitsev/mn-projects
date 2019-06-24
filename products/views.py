@@ -71,11 +71,21 @@ class ProductDetailView(DetailView):
     template_name = 'products/detail.html'
     pk_url_kwarg = 'pk'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        product = context['product']
+        context['is_author'] = product.hunter.id == self.request.user.id
+        return context
+
 
 @login_required
 def upvote(request, pk):
     if request.method == 'POST':
         product = get_object_or_404(Product, pk=pk)
+        if product.hunter.id == request.user.id:
+            raise Http404()
+
         product.votes_total += 1
         product.save()
         return redirect('detail', str(pk))

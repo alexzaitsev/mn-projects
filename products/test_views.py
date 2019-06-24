@@ -1,5 +1,6 @@
 from django.http import Http404
 from django.test import TestCase
+from django_bs_test import TestCase as BsTestCase
 
 from producthuntclone.test_utils import *
 from products.models import Product
@@ -149,7 +150,15 @@ class CreateProductTests(TestCase):
         self.assertEqual(response['Location'], f'/products/{last_product.pk}')
 
 
-class DetailTests(TestCase):
+class DetailTests(BsTestCase):
+    @staticmethod
+    def find_upvote_btn(soup):
+        links = soup.find_all('a')
+        for link in links:
+            if link.get('role') == 'button' and 'Upvote' in link.get_text():
+                return link
+        return None
+
     def test_upvote_button_is_visible_for_authenticated(self):
         """
         Upvote button is visible only if user is authenticated
@@ -171,16 +180,49 @@ class DetailTests(TestCase):
         response = self.client.get(reverse('detail', args=(product.pk,)))
         self.assertNotContains(response, 'Upvote')
 
+    def test_upvote_button_is_disabled_if_hunter_is_current_user(self):
+        """
+        Upvote button has `disabled` class if
+        the product was created by the current user.
+        """
+        create_test_user_with_endpoint(self.client)
+        create_test_product_with_endpoint(self.client)
+        product = Product.objects.latest('id')
+        response = self.client.get(reverse('detail', args=(product.pk,)))
+        upvote_btn = DetailTests.find_upvote_btn(response.soup)
+        self.assertTrue('disabled' in upvote_btn['class'])
+
+    def test_upvote_button_is_enabled_if_hunter_is_not_current_user(self):
+        """
+        Upvote button doesn't have `disabled` class if
+        the product was not created by the current user.
+        """
+        # signup, create product, logout
+        create_test_user_with_endpoint(self.client)
+        create_test_product_with_endpoint(self.client)
+        logout_test_user_with_endpoint(self.client)
+        # signup another, get product
+        create_test_user_with_endpoint(self.client, username='test_another', password='test_another')
+        product = Product.objects.latest('id')
+        # make request and assert
+        response = self.client.get(reverse('detail', args=(product.pk,)))
+        upvote_btn = DetailTests.find_upvote_btn(response.soup)
+        self.assertTrue('disabled' not in upvote_btn['class'])
+
 
 class UpvoteTests(TestCase):
     def setUp(self):
+        # signup, create product, logout
         create_test_user_with_endpoint(self.client)
         create_test_product_with_endpoint(self.client)
+        logout_test_user_with_endpoint(self.client)
+        # signup another, get product
+        create_test_user_with_endpoint(self.client, username='test_another', password='test_another')
         self.product = Product.objects.latest('id')
 
     def test_get_method_raises_404(self):
         """
-        Upvote raises Http404 if GET method is performed
+        Upvote raises Http404 if GET method is performed.
         """
         self.client.get(reverse('upvote', args=(self.product.pk,)))
         self.assertRaises(Http404)
@@ -203,3 +245,15 @@ class UpvoteTests(TestCase):
         response = self.client.post(reverse('upvote', args=(self.product.pk,)))
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response['Location'], f'/products/{self.product.pk}')
+
+    def test_raises_404_if_hunter_is_current_user(self):
+        """
+        If product's hunter is current user Http404 is raised.
+        """
+        # logout current 'another' user
+        logout_test_user_with_endpoint(self.client)
+        # login user that created the product
+        create_test_user_with_endpoint(self.client)
+        # make request and assertions
+        self.client.post(reverse('upvote', args=(self.product.pk,)))
+        self.assertRaises(Http404)

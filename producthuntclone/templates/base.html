@@ -6,7 +6,10 @@
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="https://kit.fontawesome.com/589e9a454c.js"></script>
 
-    <title>Product Hunt</title>
+    <title>Marganets Projects
+        {% block title %}
+        {% endblock %}
+    </title>
 </head>
 <body>
 
@@ -16,7 +19,7 @@
             <a href="{% url 'home' %}">
                 <img src="{% static 'logo.svg' %}" class="d-inline-block align-top mr-3" width="50"/>
             </a>
-            <a class="navbar-brand" href="{% url 'home' %}">Product Hunt</a>
+            <a class="navbar-brand" href="{% url 'home' %}">Marganets Projects</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
                     aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>

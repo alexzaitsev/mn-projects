@@ -139,6 +139,6 @@ dmypy.json
 
 .DS_Store
 .idea/
-static
+/static
 __init__.py
 migrations/

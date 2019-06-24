@@ -19,7 +19,7 @@
     <div class="col-4">
         {% if user.is_authenticated %}
         <a href="javascript:{document.getElementById('upvote').submit()}">
-            <button class="btn btn-primary btn-lg btn-block"><span class="oi oi-caret-top"></span>&nbsp;&nbsp;Upvote {{ product.votes_total }}</button>
+            <button class="btn btn-primary btn-lg btn-block"><span class="fas fa-caret-up"></span>&nbsp;&nbsp;Upvote {{ product.votes_total }}</button>
         </a>
         {% endif %}
     </div>
@@ -38,7 +38,7 @@
         <strong>Hunted by {{ product.hunter.username }}</strong>
     </div>
     <div class="col-4 text-right">
-        <strong>{{ product.pub_date_pretty }}</strong>
+        <span class="far fa-clock"></span>&nbsp;&nbsp;<strong>{{ product.pub_date_pretty }}</strong>
     </div>
 </div>
 

@@ -4,7 +4,9 @@
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link href="{% static '/open-iconic/font/css/open-iconic-bootstrap.css' %}" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/589e9a454c.js"></script>
+
+    <title>Product Hunt</title>
 </head>
 <body>
 
@@ -23,7 +25,7 @@
                 <ul class="navbar-nav ml-auto">
                     {% if user.is_authenticated %}
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'create' %}"><span class="oi oi-plus pt-1 pr-2"></span></a>
+                            <a class="nav-link" href="{% url 'create' %}"><span class="fas fa-plus pt-1 pr-2"></span></a>
                         </li>
 
                         <li class="nav-item">

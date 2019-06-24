@@ -9,9 +9,12 @@
             <div class="col-2">
                 <img src="{{ product.icon.url }}" class="img-fluid" height="200"/>
             </div>
-            <div class="col-10">
+            <div class="col-9">
                 <h3><a href="{% url 'detail' product.pk %}">{{ product.title|upper }}</a></h3>
                 <p>{{ product.summary }}</p>
+            </div>
+            <div class="col-1">
+                <p><i>{{ product.votes_total }}</i> vote{{ product.votes_total|pluralize }}</p>
             </div>
         </div>
         <br>
@@ -19,7 +22,7 @@
 
     {% if products.has_previous or products.has_next %}
         <br>
-        <div>
+        <div class="text-center">
             <span>
                 {% if products.has_previous %}
                     <a href="?page=1">&laquo; first</a> |
@@ -34,6 +37,7 @@
                 {% endif %}
             </span>
         </div>
+        <br>
     {% endif %}
 {% else %}
     <br><span>There are no products yet.</span><br><br>

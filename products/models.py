@@ -17,6 +17,3 @@ class Product(models.Model):
 
     def pub_date_pretty(self):
         return self.pub_date.strftime('%e %b %Y')
-
-    def summary(self):
-        return self.body if len(self.body) <= 100 else f'{self.body[:100].strip()}...'

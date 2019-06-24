@@ -1,4 +1,20 @@
 {% extends 'base.html' %}
+
+{% block head %}
+
+
+    <style>
+        .l3 {
+            line-height: 2.5ex;
+            height: 7.5ex; /* 2.5ex for each visible line */
+            overflow: hidden;
+        }
+    </style>
+
+
+{% endblock %}
+
+
 {% block content %}
 
 
@@ -6,12 +22,12 @@
     <br>
     {% for product in products %}
         <div class="row">
-            <div class="col-2">
-                <img src="{{ product.icon.url }}" class="img-fluid" height="200"/>
+            <div class="col-3">
+                <img src="{{ product.icon.url }}" class="img-icon"/>
             </div>
-            <div class="col-9">
+            <div class="col-8">
                 <h3><a href="{% url 'detail' product.pk %}">{{ product.title|upper }}</a></h3>
-                <p>{{ product.summary }}</p>
+                <p class="l3">{{ product.body }}</p>
             </div>
             <div class="col-1">
                 <p><i>{{ product.votes_total }}</i> vote{{ product.votes_total|pluralize }}</p>

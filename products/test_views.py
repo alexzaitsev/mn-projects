@@ -192,6 +192,17 @@ class DetailTests(BsTestCase):
         upvote_btn = DetailTests.find_upvote_btn(response.soup)
         self.assertTrue('disabled' in upvote_btn['class'])
 
+    def test_info_message_is_shown_if_hunter_is_current_user(self):
+        """
+        Html contains info message if
+        the product was created by the current user.
+        """
+        create_test_user_with_endpoint(self.client)
+        create_test_product_with_endpoint(self.client)
+        product = Product.objects.latest('id')
+        response = self.client.get(reverse('detail', args=(product.pk,)))
+        self.assertContains(response, 'You cannot vote on your own projects.')
+
     def test_upvote_button_is_enabled_if_hunter_is_not_current_user(self):
         """
         Upvote button doesn't have `disabled` class if
@@ -202,6 +213,48 @@ class DetailTests(BsTestCase):
         create_test_product_with_endpoint(self.client)
         logout_test_user_with_endpoint(self.client)
         # signup another, get product
+        create_test_user_with_endpoint(self.client, username='test_another', password='test_another')
+        product = Product.objects.latest('id')
+        # make request and assert
+        response = self.client.get(reverse('detail', args=(product.pk,)))
+        upvote_btn = DetailTests.find_upvote_btn(response.soup)
+        self.assertTrue('disabled' not in upvote_btn['class'])
+
+    def test_upvote_button_is_disabled_if_user_has_already_voted_on_somebody_s_question(self):
+        # signup, create product, logout
+        create_test_user_with_endpoint(self.client)
+        create_test_product_with_endpoint(self.client)
+        logout_test_user_with_endpoint(self.client)
+        # signup another, get product
+        create_test_user_with_endpoint(self.client, username='test_another', password='test_another')
+        product = Product.objects.latest('id')
+        # vote on that product
+        self.client.post(reverse('upvote', args=(product.pk,)))
+        # make request and assert
+        response = self.client.get(reverse('detail', args=(product.pk,)))
+        upvote_btn = DetailTests.find_upvote_btn(response.soup)
+        self.assertTrue('disabled' in upvote_btn['class'])
+
+    def test_info_message_is_shown_if_user_has_already_voted_on_somebody_s_question(self):
+        # signup, create product, logout
+        create_test_user_with_endpoint(self.client)
+        create_test_product_with_endpoint(self.client)
+        logout_test_user_with_endpoint(self.client)
+        # signup another, get product
+        create_test_user_with_endpoint(self.client, username='test_another', password='test_another')
+        product = Product.objects.latest('id')
+        # vote on that product
+        self.client.post(reverse('upvote', args=(product.pk,)))
+        # make request and assert
+        response = self.client.get(reverse('detail', args=(product.pk,)))
+        self.assertContains(response, 'You can vote on the project only once.')
+
+    def test_upvote_button_is_enabled_if_user_has_not_voted_on_somebody_s_question_yet(self):
+        # signup, create product, logout
+        create_test_user_with_endpoint(self.client)
+        create_test_product_with_endpoint(self.client)
+        logout_test_user_with_endpoint(self.client)
+        # signup another, get product, DO NOT VOTE
         create_test_user_with_endpoint(self.client, username='test_another', password='test_another')
         product = Product.objects.latest('id')
         # make request and assert
@@ -255,5 +308,15 @@ class UpvoteTests(TestCase):
         # login user that created the product
         create_test_user_with_endpoint(self.client)
         # make request and assertions
+        self.client.post(reverse('upvote', args=(self.product.pk,)))
+        self.assertRaises(Http404)
+
+    def test_raises_404_if_user_has_already_voted_on_somebody_s_product(self):
+        """
+        If user has already voted on the product
+        that they don't own and tries to vote again -
+        Http404 error is raised.
+        """
+        self.client.post(reverse('upvote', args=(self.product.pk,)))
         self.client.post(reverse('upvote', args=(self.product.pk,)))
         self.assertRaises(Http404)

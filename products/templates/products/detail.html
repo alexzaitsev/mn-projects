@@ -23,12 +23,20 @@
     </div>
     <div class="col-4">
         {% if user.is_authenticated %}
-            <a href="javascript:{document.getElementById('upvote').submit()}" class="btn btn-primary btn-lg btn-block {% if is_author %}disabled{% endif %}" role="button">
+            <a href="javascript:{document.getElementById('upvote').submit()}" class="btn btn-primary btn-lg btn-block {% if is_author or is_voted %}disabled{% endif %}" role="button">
                 <span class="fas fa-caret-up"></span>&nbsp;&nbsp;Upvote {{ product.votes_total }}
             </a>
-            {% if is_author %}
+            {% if is_author or is_voted %}
                 <div class="text-center pt-1">
-                    <span class="small"><i>You cannot vote on your own projects.</i></span>
+                    <span class="small"><i>
+                        {% if is_author %}
+                            You cannot vote on your own projects.
+                        {% endif %}
+
+                        {% if is_voted %}
+                            You can vote on the project only once.
+                        {% endif %}
+                    </i></span>
                 </div>
             {% endif%}
         {% endif %}

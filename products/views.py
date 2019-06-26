@@ -2,12 +2,13 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
 from django.core.paginator import Paginator
 from django.core.validators import URLValidator
+from django.db import IntegrityError
 from django.http import Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 from django.views.generic import DetailView, ListView
 
-from products.models import Product
+from products.models import Product, ProductVote
 
 
 class HomeView(ListView):
@@ -53,8 +54,7 @@ def create(request):
 
 
 def _decorate_url(url):
-    return url if url.startswith('http://') or url.startswith('https://')\
-        else 'http://' + url
+    return url if url.startswith('http://') or url.startswith('https://') else 'http://' + url
 
 
 def _validate_url(url):
@@ -76,6 +76,9 @@ class ProductDetailView(DetailView):
 
         product = context['product']
         context['is_author'] = product.hunter.id == self.request.user.id
+        if self.request.user.is_authenticated:
+            context['is_voted'] = ProductVote.is_already_voted(self.request.user, product)
+
         return context
 
 
@@ -83,7 +86,15 @@ class ProductDetailView(DetailView):
 def upvote(request, pk):
     if request.method == 'POST':
         product = get_object_or_404(Product, pk=pk)
+
         if product.hunter.id == request.user.id:
+            # User cannot vote on their own questions
+            raise Http404()
+
+        try:
+            ProductVote.objects.create(user=request.user, product=product)
+        except IntegrityError:
+            # User has already voted on this question
             raise Http404()
 
         product.votes_total += 1

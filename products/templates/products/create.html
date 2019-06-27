@@ -1,31 +1,32 @@
 {% extends 'base.html' %}
+{% load i18n %}
 
 {% block title %}
-- New Product
+- {% trans 'create_project' %}
 {% endblock %}
 
 {% block content %}
 
 
-<h1>Create product</h1>
+<h1>{% trans 'create_project' %}</h1>
 <form method="POST" action="{% url 'create' %}" enctype="multipart/form-data">
     {% csrf_token %}
-    Title:<br>
+    {% trans 'title' %}:<br>
     <input type="text" name="title"/>
     <br>
-    Body:<br>
+    {% trans 'description' %}:<br>
     <input type="textbox" name="body"/>
     <br>
-    URL:<br>
+    {% trans 'url' %}:<br>
     <input type="text" name="url"/>
     <br>
-    Icon:<br>
+    {% trans 'icon' %}:<br>
     <input type="file" name="icon"/>
     <br>
-    Image:<br>
+    {% trans 'image' %}:<br>
     <input type="file" name="image"/>
     <br><br>
-    <input class="btn btn-primary" type="submit" value="Add Product">
+    <input class="btn btn-primary" type="submit" value="{% trans 'add_project' %}">
 </form>
 
 

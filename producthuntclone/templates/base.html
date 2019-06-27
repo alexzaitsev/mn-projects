@@ -1,3 +1,4 @@
+{% load i18n %}
 <html>
 <head>
     {% load staticfiles %}
@@ -7,7 +8,7 @@
     <script src="https://kit.fontawesome.com/589e9a454c.js"></script>
     <link rel="stylesheet" href="{% static 'style.css' %}"/>
 
-    <title>Marganets Projects
+    <title>{% trans 'mnprojects' %}
         {% block title %}
         {% endblock %}
     </title>
@@ -23,7 +24,7 @@
             <a href="{% url 'home' %}">
                 <img src="{% static 'logo.svg' %}" class="d-inline-block align-top mr-3" width="50"/>
             </a>
-            <a class="navbar-brand" href="{% url 'home' %}">Marganets Projects</a>
+            <a class="navbar-brand" href="{% url 'home' %}">{% trans 'mnprojects' %}</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
                     aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -36,7 +37,7 @@
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" href="javascript:{document.getElementById('logout').submit()}">Logout</a>
+                            <a class="nav-link" href="javascript:{document.getElementById('logout').submit()}">{% trans 'logout' %}</a>
                         </li>
                         <form id="logout" method="POST" action="{% url 'logout' %}">
                             {% csrf_token %}
@@ -44,10 +45,10 @@
                         </form>
                     {% else %}
                         <li class="nav-item active">
-                            <a class="nav-link" href="{% url 'signup' %}">Sign Up</a>
+                            <a class="nav-link" href="{% url 'signup' %}">{% trans 'signup' %}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'login' %}">Login</a>
+                            <a class="nav-link" href="{% url 'login' %}">{% trans 'login' %}</a>
                         </li>
                     {% endif %}
                 </ul>
@@ -78,7 +79,7 @@
 <footer class="text-muted">
     <div class="container text-center">
         <br>
-        <p>© Alex Zaitsev {% now "Y" %}</p>
+        <p>© {% trans 'author' %} {% now "Y" %}</p>
     </div>
 </footer>
 

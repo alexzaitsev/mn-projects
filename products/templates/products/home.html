@@ -1,23 +1,18 @@
 {% extends 'base.html' %}
+{% load i18n %}
 
 {% block head %}
-
-
-    <style>
-        .l3 {
-            line-height: 2.5ex;
-            height: 7.5ex; /* 2.5ex for each visible line */
-            overflow: hidden;
-        }
-    </style>
-
-
+<style>
+    .l3 {
+        line-height: 2.5ex;
+        height: 7.5ex; /* 2.5ex for each visible line */
+        overflow: hidden;
+    }
+</style>
 {% endblock %}
 
 
 {% block content %}
-
-
 {% if products %}
     <br>
     {% for product in products %}
@@ -29,8 +24,8 @@
                 <h3><a href="{% url 'detail' product.pk %}">{{ product.title|upper }}</a></h3>
                 <p class="l3">{{ product.body }}</p>
             </div>
-            <div class="col-1">
-                <p><i>{{ product.votes_total }}</i> vote{{ product.votes_total|pluralize }}</p>
+            <div class="col-1 text-center">
+                <p>{% blocktrans count product.votes_total as d%}{{ d }} vote{% plural %}{{ d }} votes{% endblocktrans %}</p>
             </div>
         </div>
         <br>
@@ -41,31 +36,29 @@
         <div class="text-center">
             <span>
                 {% if products.has_previous %}
-                    <a href="?page=1">&laquo; first</a> |
-                    <a href="?page={{ contacts.previous_page_number }}">prev</a>
+                    <a href="?page=1">&laquo; {% trans 'first' %}</a> |
+                    <a href="?page={{ contacts.previous_page_number }}">{% trans 'prev' %}</a>
                 {% endif %}
 
-                <span>page {{ products.number }} of {{ products.paginator.num_pages }}</span>
+                <span>{% trans 'page' %} {{ products.number }} {% trans 'of' %} {{ products.paginator.num_pages }}</span>
 
                 {% if products.has_next %}
-                    <a href="?page={{ products.next_page_number }}">next</a> |
-                    <a href="?page={{ products.paginator.num_pages }}">last &raquo;</a>
+                    <a href="?page={{ products.next_page_number }}">{% trans 'next' %}</a> |
+                    <a href="?page={{ products.paginator.num_pages }}">{% trans 'last' %} &raquo;</a>
                 {% endif %}
             </span>
         </div>
         <br>
     {% endif %}
 {% else %}
-    <br><span>There are no products yet.</span><br><br>
+    <br><span>{% trans 'no_projects' %}</span><br><br>
     {% if user.is_authenticated %}
-        <a href="{% url 'create' %}" class="btn btn-primary">Create one</a>
+        <a href="{% url 'create' %}" class="btn btn-primary">{% trans 'create_one' %}</a>
     {% else %}
-        <a href="{% url 'signup' %}" class="btn btn-primary">Sign Up</a>
-        <span class="ml-3 mr-3">or</span>
-        <a href="{% url 'login' %}" class="btn btn-primary">Login</a>
-        <span class="ml-3 mr-3">to create.</span>
+        <a href="{% url 'signup' %}" class="btn btn-primary">{% trans 'signup' %}</a>
+        <span class="ml-3 mr-3">{% trans 'or' %}</span>
+        <a href="{% url 'login' %}" class="btn btn-primary">{% trans 'login' %}</a>
+        <span class="ml-3 mr-3">{% trans 'to_create' %}.</span>
     {% endif %}
 {% endif %}
-
-
 {% endblock %}

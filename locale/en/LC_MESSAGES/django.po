@@ -1,0 +1,99 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-06-27 18:39+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "login"
+msgstr "Login"
+
+msgid "signup"
+msgstr "Sign Up"
+
+msgid "logout"
+msgstr "Logout"
+
+msgid "mnprojects"
+msgstr "Marganets Projects"
+
+msgid "username"
+msgstr "Username"
+
+msgid "password"
+msgstr "Password"
+
+msgid "confirm_password"
+msgstr "Confirm password"
+
+msgid "author"
+msgstr "Alex Zaitsev"
+
+msgid "create_project"
+msgstr "Create project"
+
+msgid "title"
+msgstr "Title"
+
+msgid "description"
+msgstr "Description"
+
+msgid "url"
+msgstr "URL"
+
+msgid "icon"
+msgstr "Icon"
+
+msgid "image"
+msgstr "Image"
+
+msgid "add_project"
+msgstr "Add Project"
+
+msgid "page"
+msgstr "page"
+
+msgid "of"
+msgstr "of"
+
+msgid "first"
+msgstr "first"
+
+msgid "prev"
+msgstr "prev"
+
+msgid "next"
+msgstr "next"
+
+msgid "last"
+msgstr "last"
+
+msgid "no_projects"
+msgstr "There are no projects yet."
+
+msgid "create_one"
+msgstr "Create one"
+
+msgid "or"
+msgstr "or"
+
+msgid "to_create"
+msgstr "to create"
+
+msgid "%(d)s vote"
+msgid_plural "%(d)s votes"
+msgstr[0] "%(d)s vote"
+msgstr[1] "%(d)s votes"

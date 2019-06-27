@@ -1,24 +1,25 @@
 {% extends 'base.html' %}
+{% load i18n %}
 
 {% block title %}
-- Sign Up
+- {% trans 'signup' %}
 {% endblock %}
 
 {% block content %}
 
-<h1>Sign Up</h1>
+<h1>{% trans 'signup' %}</h1>
 <form method="POST" action="{% url 'signup' %}">
     {% csrf_token %}
-    Username:<br>
+    {% trans 'username' %}:<br>
     <input type="text" name="username"/>
     <br>
-    Password:<br>
+    {% trans 'password' %}:<br>
     <input type="password" name="password1"/>
     <br>
-    Confirm password:<br>
+    {% trans 'confirm_password' %}:<br>
     <input type="password" name="password2"/>
     <br><br>
-    <input class="btn btn-primary" type="submit" value="Sign Up">
+    <input class="btn btn-primary" type="submit" value="{% trans 'signup' %}">
 </form>
 
 {% endblock %}

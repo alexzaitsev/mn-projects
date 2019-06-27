@@ -1,0 +1,102 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-06-27 18:38+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: ru\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
+"%100>=11 && n%100<=14)? 2 : 3);\n"
+
+msgid "login"
+msgstr "Войти"
+
+msgid "signup"
+msgstr "Зарегистрироваться"
+
+msgid "logout"
+msgstr "Выйти"
+
+msgid "mnprojects"
+msgstr "Марганецкие проекты"
+
+msgid "username"
+msgstr "Имя пользователя"
+
+msgid "password"
+msgstr "Пароль"
+
+msgid "confirm_password"
+msgstr "Подтвердите пароль"
+
+msgid "author"
+msgstr "Александр Зайцев"
+
+msgid "create_project"
+msgstr "Новый проект"
+
+msgid "title"
+msgstr "Название"
+
+msgid "description"
+msgstr "Описание"
+
+msgid "url"
+msgstr "Ссылка"
+
+msgid "icon"
+msgstr "Иконка"
+
+msgid "image"
+msgstr "Изображение"
+
+msgid "add_project"
+msgstr "Добавить проект"
+
+msgid "page"
+msgstr "стр"
+
+msgid "of"
+msgstr "из"
+
+msgid "first"
+msgstr "первая"
+
+msgid "prev"
+msgstr "пред"
+
+msgid "next"
+msgstr "след"
+
+msgid "last"
+msgstr "последняя"
+
+msgid "no_projects"
+msgstr "Нет проектов."
+
+msgid "create_one"
+msgstr "Создать"
+
+msgid "or"
+msgstr "или"
+
+msgid "to_create"
+msgstr "чтобы создать"
+
+msgid "%(d)s vote"
+msgid_plural "%(d)s votes"
+msgstr[0] "%(d)s голос"
+msgstr[1] "%(d)s голоса"
+msgstr[2] "%(d)s голосов"

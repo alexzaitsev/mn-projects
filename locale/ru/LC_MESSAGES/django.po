@@ -100,3 +100,15 @@ msgid_plural "%(d)s votes"
 msgstr[0] "%(d)s голос"
 msgstr[1] "%(d)s голоса"
 msgstr[2] "%(d)s голосов"
+
+msgid "upvote"
+msgstr "Голосовать"
+
+msgid "cannot_vote_on_own"
+msgstr "Вы не можете голосовать за свои проекты."
+
+msgid "vote_once"
+msgstr "За проект можно голосовать только единожды."
+
+msgid "added_by"
+msgstr "Добавлено пользователем"

@@ -97,3 +97,15 @@ msgid "%(d)s vote"
 msgid_plural "%(d)s votes"
 msgstr[0] "%(d)s vote"
 msgstr[1] "%(d)s votes"
+
+msgid "upvote"
+msgstr "Upvote"
+
+msgid "cannot_vote_on_own"
+msgstr "You cannot vote on your own projects."
+
+msgid "vote_once"
+msgstr "You can vote on the project only once."
+
+msgid "added_by"
+msgstr "Added by"

@@ -1,6 +1,7 @@
 from django.contrib import auth
 from django.test import TestCase
 from django.urls import reverse
+from django.utils.translation import gettext as _
 
 
 class SignUpTests(TestCase):
@@ -23,7 +24,7 @@ class SignUpTests(TestCase):
         response = self.get_post_response()
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'accounts/signup.html')
-        self.assertEqual(response.context[-1]['error'], 'Username must be provided')
+        self.assertEqual(response.context[-1]['error'], _('username_empty_error'))
 
     def test_empty_password1_raises_error(self):
         """
@@ -33,7 +34,7 @@ class SignUpTests(TestCase):
         response = self.get_post_response({'username': 'test', 'password1': '', 'password2': ''})
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'accounts/signup.html')
-        self.assertEqual(response.context[-1]['error'], 'Password must be provided')
+        self.assertEqual(response.context[-1]['error'], _('password_empty_error'))
 
     def test_empty_password2_raises_error(self):
         """
@@ -43,7 +44,7 @@ class SignUpTests(TestCase):
         response = self.get_post_response({'username': 'test', 'password1': 'test', 'password2': ''})
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'accounts/signup.html')
-        self.assertEqual(response.context[-1]['error'], 'Password must be provided')
+        self.assertEqual(response.context[-1]['error'], _('password_empty_error'))
 
     def test_different_passwords_raises_error(self):
         """
@@ -60,7 +61,7 @@ class SignUpTests(TestCase):
         response = self.get_post_response({'username': 'test', 'password1': 'test', 'password2': 'test-different'})
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'accounts/signup.html')
-        self.assertEqual(response.context[-1]['error'], 'Passwords are not equal')
+        self.assertEqual(response.context[-1]['error'], _('passwords_not_equal_error'))
 
     def test_correct_credentials_create_user(self):
         """
@@ -101,7 +102,7 @@ class LoginTests(TestCase):
         response = self.get_post_response()
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'accounts/login.html')
-        self.assertEqual(response.context[-1]['error'], 'Username must be provided')
+        self.assertEqual(response.context[-1]['error'], _('username_empty_error'))
 
     def test_empty_password_raises_error(self):
         """
@@ -111,7 +112,7 @@ class LoginTests(TestCase):
         response = self.get_post_response({'username': 'test', 'password': ''})
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'accounts/login.html')
-        self.assertEqual(response.context[-1]['error'], 'Password must be provided')
+        self.assertEqual(response.context[-1]['error'], _('password_empty_error'))
 
     def test_wrong_credentials_raises_error(self):
         """
@@ -121,7 +122,7 @@ class LoginTests(TestCase):
         response = self.get_post_response({'username': 'test', 'password': 't'})
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'accounts/login.html')
-        self.assertEqual(response.context[-1]['error'], 'Username login or password is incorrect')
+        self.assertEqual(response.context[-1]['error'], _('login_or_password_error'))
 
     def test_correct_credentials_redirects_to_home(self):
         """

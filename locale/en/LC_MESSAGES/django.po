@@ -115,3 +115,18 @@ msgstr "URL must be valid"
 
 msgid "fields_error"
 msgstr "All fields are required"
+
+msgid "username_empty_error"
+msgstr "Username must be provided"
+
+msgid "password_empty_error"
+msgstr "Password must be provided"
+
+msgid "passwords_not_equal_error"
+msgstr "Passwords are not equal"
+
+msgid "username_exists_error"
+msgstr "Username has already been taken"
+
+msgid "login_or_password_error"
+msgstr "Username or password is incorrect"

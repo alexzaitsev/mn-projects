@@ -118,3 +118,18 @@ msgstr "Ссылка должна быть действительной"
 
 msgid "fields_error"
 msgstr "Все поля обязательны"
+
+msgid "username_empty_error"
+msgstr "Имя пользователя обязательно"
+
+msgid "password_empty_error"
+msgstr "Пароль обязателен"
+
+msgid "passwords_not_equal_error"
+msgstr "Пароли не совпадают"
+
+msgid "username_exists_error"
+msgstr "Это имя уже используется"
+
+msgid "login_or_password_error"
+msgstr "Имя пользователя или пароль неверны"

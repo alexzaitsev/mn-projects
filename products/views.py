@@ -7,6 +7,7 @@ from django.http import Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 from django.views.generic import DetailView, ListView
+from django.utils.translation import gettext as _
 
 from products.models import Product, ProductVote
 
@@ -27,28 +28,33 @@ class HomeView(ListView):
 @login_required
 def create(request):
     if request.method == 'POST':
-        title = request.POST['title']
-        body = request.POST['body']
-        url = request.POST['url']
-        icon = request.FILES['icon']
-        image = request.FILES['image']
-        if title and body and url and icon and image:
-            url = _decorate_url(url)
-            if not _validate_url(url):
-                return render(request, 'products/create.html', {'error': 'URL must be valid'})
-
-            product = Product()
-            product.title = title
-            product.body = body
-            product.url = url
-            product.icon = icon
-            product.image = image
-            product.pub_date = timezone.datetime.now()
-            product.hunter = request.user
-            product.save()
-            return redirect('detail', str(product.pk))
+        from django.utils.datastructures import MultiValueDictKeyError
+        try:
+            title = request.POST['title']
+            body = request.POST['body']
+            url = request.POST['url']
+            icon = request.FILES['icon']
+            image = request.FILES['image']
+        except MultiValueDictKeyError:
+            return render(request, 'products/create.html', {'error': _('fields_error')})
         else:
-            return render(request, 'products/create.html', {'error': 'All fields are required'})
+            if title and body and url and icon and image:
+                url = _decorate_url(url)
+                if not _validate_url(url):
+                    return render(request, 'products/create.html', {'error': _('url_error')})
+
+                product = Product()
+                product.title = title
+                product.body = body
+                product.url = url
+                product.icon = icon
+                product.image = image
+                product.pub_date = timezone.datetime.now()
+                product.hunter = request.user
+                product.save()
+                return redirect('detail', str(product.pk))
+            else:
+                return render(request, 'products/create.html', {'error': _('fields_error')})
     else:
         return render(request, 'products/create.html')
 

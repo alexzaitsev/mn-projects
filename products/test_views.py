@@ -79,7 +79,7 @@ class CreateProductTests(TestCase):
         response = self.client.post(reverse('create'), data or {})
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'products/create.html')
-        self.assertEqual(response.context[-1]['error'], 'All fields are required')
+        self.assertEqual(response.context[-1]['error'], _('fields_error'))
 
     def test_get_method_returns_create_page(self):
         """
@@ -130,7 +130,7 @@ class CreateProductTests(TestCase):
                                     {'title': 'title', 'body': 'body', 'url': url, 'icon': test_image, 'image': test_image})
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'products/create.html')
-        self.assertEqual(response.context[-1]['error'], 'URL must be valid')
+        self.assertEqual(response.context[-1]['error'], _('url_error'))
 
     def test_correct_data_creates_product_in_database(self):
         """

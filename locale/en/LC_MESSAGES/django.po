@@ -109,3 +109,9 @@ msgstr "You can vote on the project only once."
 
 msgid "added_by"
 msgstr "Added by"
+
+msgid "url_error"
+msgstr "URL must be valid"
+
+msgid "fields_error"
+msgstr "All fields are required"

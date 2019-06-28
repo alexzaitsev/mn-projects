@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load i18n %}
+{% load italic_first %}
 
 {% block head %}
 <style>
@@ -25,7 +26,11 @@
                 <p class="l3">{{ product.body }}</p>
             </div>
             <div class="col-1 text-center">
-                <p>{% blocktrans count product.votes_total as d%}{{ d }} vote{% plural %}{{ d }} votes{% endblocktrans %}</p>
+                <p>
+                    {% filter italic_first %}
+                        {% blocktrans count product.votes_total as d%}{{ d }} vote{% plural %}{{ d }} votes{% endblocktrans %}
+                    {% endfilter %}
+                </p>
             </div>
         </div>
         <br>

@@ -1,6 +1,7 @@
 from django.http import Http404
 from django.test import TestCase
 from django_bs_test import TestCase as BsTestCase
+from django.utils.translation import gettext as _
 
 from producthuntclone.test_utils import *
 from products.models import Product
@@ -14,37 +15,37 @@ class HomeTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'products/home.html')
 
-    def test_no_products_info_is_shown_if_there_are_no_products(self):
+    def test_no_projects_info_is_shown_if_there_are_no_products(self):
         response = self.client.get(reverse('home'))
-        self.assertContains(response, 'There are no products yet.')
+        self.assertContains(response, _('no_projects'))
 
     def test_create_btn_is_shown_if_there_are_no_products_and_user_is_authenticated(self):
         create_test_user_with_endpoint(self.client)
         response = self.client.get(reverse('home'))
-        self.assertContains(response, 'Create one')
+        self.assertContains(response, _('create_one'))
 
     def test_signup_and_login_btn_are_shown_if_there_are_no_products_and_user_is_not_authenticated(self):
         response = self.client.get(reverse('home'))
-        self.assertContains(response, 'class="btn btn-primary">Sign Up</a>')
-        self.assertContains(response, 'class="btn btn-primary">Login</a>')
+        self.assertContains(response, f'class="btn btn-primary">{_("signup")}</a>')
+        self.assertContains(response, f'class="btn btn-primary">{_("login")}</a>')
 
     def test_pagination_info_is_shown_if_there_are_more_products_to_show(self):
         create_test_user_with_endpoint(self.client)
         create_test_products_in_range(self.client, HomeTests.PAGE_SIZE * 2)
 
         response = self.client.get(reverse('home'))
-        self.assertContains(response, 'page 1 of 2')
+        self.assertContains(response, f'{_("page")} 1 {_("of")} 2')
 
     def test_pagination_info_is_not_shown_if_all_products_are_shown(self):
         create_test_user_with_endpoint(self.client)
         create_test_products_in_range(self.client, HomeTests.PAGE_SIZE)
 
         response = self.client.get(reverse('home'))
-        self.assertNotContains(response, 'page')
+        self.assertNotContains(response, _("page"))
 
     def test_pagination_info_is_not_shown_if_there_are_no_products(self):
         response = self.client.get(reverse('home'))
-        self.assertNotContains(response, 'page')
+        self.assertNotContains(response, _("page"))
 
     def test_first_page_is_shown_if_incorrect_page_is_passed(self):
         create_test_user_with_endpoint(self.client)
@@ -155,7 +156,7 @@ class DetailTests(BsTestCase):
     def find_upvote_btn(soup):
         links = soup.find_all('a')
         for link in links:
-            if link.get('role') == 'button' and 'Upvote' in link.get_text():
+            if link.get('role') == 'button' and _('upvote') in link.get_text():
                 return link
         return None
 
@@ -167,7 +168,7 @@ class DetailTests(BsTestCase):
         create_test_product_with_endpoint(self.client)
         product = Product.objects.latest('id')
         response = self.client.get(reverse('detail', args=(product.pk,)))
-        self.assertContains(response, 'Upvote')
+        self.assertContains(response, _('upvote'))
 
     def test_upvote_button_is_not_visible_for_unauthenticated(self):
         """
@@ -178,7 +179,7 @@ class DetailTests(BsTestCase):
         product = Product.objects.latest('id')
         logout_test_user_with_endpoint(self.client)
         response = self.client.get(reverse('detail', args=(product.pk,)))
-        self.assertNotContains(response, 'Upvote')
+        self.assertNotContains(response, _('upvote'))
 
     def test_upvote_button_is_disabled_if_hunter_is_current_user(self):
         """
@@ -201,7 +202,7 @@ class DetailTests(BsTestCase):
         create_test_product_with_endpoint(self.client)
         product = Product.objects.latest('id')
         response = self.client.get(reverse('detail', args=(product.pk,)))
-        self.assertContains(response, 'You cannot vote on your own projects.')
+        self.assertContains(response, _('cannot_vote_on_own'))
 
     def test_upvote_button_is_enabled_if_hunter_is_not_current_user(self):
         """
@@ -247,7 +248,7 @@ class DetailTests(BsTestCase):
         self.client.post(reverse('upvote', args=(product.pk,)))
         # make request and assert
         response = self.client.get(reverse('detail', args=(product.pk,)))
-        self.assertContains(response, 'You can vote on the project only once.')
+        self.assertContains(response, _('vote_once'))
 
     def test_upvote_button_is_enabled_if_user_has_not_voted_on_somebody_s_question_yet(self):
         # signup, create product, logout

@@ -1,2 +1,8 @@
 # freeze
 cd /env/bin && ./python pip freeze > ../../requirements.txt && cd ../..
+
+# makemessages
+cd locale
+python ../manage.py makemessages -l=ru -e=html
+python ../manage.py makemessages -l=en -e=html
+python ../manage.py compilemessages

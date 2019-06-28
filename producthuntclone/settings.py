@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'producthuntclone',
     'products.apps.ProductsConfig',
     'accounts.apps.AccountsConfig',
+    'django_translation_flags',
 ]
 
 MIDDLEWARE = [

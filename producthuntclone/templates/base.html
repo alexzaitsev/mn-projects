@@ -2,6 +2,7 @@
 <html>
 <head>
     {% load staticfiles %}
+    {% load flags %}
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -30,6 +31,9 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    {% languages 'square' li_class='pr-1' %}
+                </ul>
                 <ul class="navbar-nav ml-auto">
                     {% if user.is_authenticated %}
                         <li class="nav-item">

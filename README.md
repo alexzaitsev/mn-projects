@@ -92,6 +92,16 @@ or raise 404 error.
 
 All validations are covered with the tests.
 
+## Admin panel
+
+Django admin panel is supported. There are possibilities to manage users and projects (any actions are supported).  
+
+![Admin_home](screenshots/admin_home.png)
+
+Translations managing is also supported.
+
+![Admin_project_detail](screenshots/admin_project_detail.png)
+
 # Upwork
 
 This project is part of my Upwork portfolio.

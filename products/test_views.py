@@ -79,7 +79,7 @@ class CreateProductTests(TestCase):
         response = self.client.post(reverse('create'), data or {})
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'products/create.html')
-        self.assertEqual(response.context[-1]['error'], _('fields_error'))
+        self.assertEqual(response.context[CONTEXT_INDEX]['error'], _('fields_error'))
 
     def test_get_method_returns_create_page(self):
         """
@@ -117,7 +117,9 @@ class CreateProductTests(TestCase):
         """
         url = 'google.com'
         response = self.client.post(reverse('create'),
-                                    {'title': 'title', 'body': 'body', 'url': url, 'icon': test_image, 'image': test_image})
+                                    {'title': 'title', 'title-ru': 'title-ru',
+                                     'body': 'body', 'body-ru': 'body-ru',
+                                     'url': url, 'icon': test_image, 'image': test_image})
         self.assertEqual(response.status_code, 302)
 
     def test_malformed_url_raises_error(self):
@@ -127,10 +129,12 @@ class CreateProductTests(TestCase):
         """
         url = 'googlecom'
         response = self.client.post(reverse('create'),
-                                    {'title': 'title', 'body': 'body', 'url': url, 'icon': test_image, 'image': test_image})
+                                    {'title': 'title', 'title-ru': 'title-ru',
+                                     'body': 'body', 'body-ru': 'body-ru',
+                                     'url': url, 'icon': test_image, 'image': test_image})
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'products/create.html')
-        self.assertEqual(response.context[-1]['error'], _('url_error'))
+        self.assertEqual(response.context[CONTEXT_INDEX]['error'], _('url_error'))
 
     def test_correct_data_creates_product_in_database(self):
         """

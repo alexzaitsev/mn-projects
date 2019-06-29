@@ -5,6 +5,10 @@ from django.utils import timezone
 
 from products.models import Product
 
+
+CONTEXT_INDEX = 0
+
+
 test_image = SimpleUploadedFile('image.png', b'file_content', content_type='image/png')
 
 
@@ -15,7 +19,9 @@ def create_test_user_with_endpoint(client, username='test', password='test'):
 def create_test_product_with_endpoint(client, title='title', body='body', url='google.com'):
     return client.post(reverse('create'),
                        {'title': title,
+                        'title-ru': '',
                         'body': body,
+                        'body-ru': '',
                         'url': url,
                         'icon': test_image,
                         'image': test_image,

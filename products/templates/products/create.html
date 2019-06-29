@@ -11,12 +11,18 @@
 <h1>{% trans 'create_project' %}</h1>
 <form method="POST" action="{% url 'create' %}" enctype="multipart/form-data">
     {% csrf_token %}
-    {% trans 'title' %}:<br>
+    {% trans 'title' %} (en):<br>
     <input type="text" name="title"/>
     <br>
-    {% trans 'description' %}:<br>
-    <input type="textbox" name="body"/>
+    {% trans 'title' %} (ru):<br>
+    <input type="text" name="title-ru"/>
+    <br><br>
+    {% trans 'description' %} (en):<br>
+    <textarea name="body" rows="5"></textarea>
     <br>
+    {% trans 'description' %} (ru):<br>
+    <textarea name="body-ru" rows="5"></textarea>
+    <br><br>
     {% trans 'url' %}:<br>
     <input type="text" name="url"/>
     <br>

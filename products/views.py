@@ -30,22 +30,26 @@ def create(request):
     if request.method == 'POST':
         from django.utils.datastructures import MultiValueDictKeyError
         try:
-            title = request.POST['title']
-            body = request.POST['body']
+            title_en = request.POST['title']
+            title_ru = request.POST['title-ru']
+            body_en = request.POST['body']
+            body_ru = request.POST['body-ru']
             url = request.POST['url']
             icon = request.FILES['icon']
             image = request.FILES['image']
         except MultiValueDictKeyError:
             return render(request, 'products/create.html', {'error': _('fields_error')})
         else:
-            if title and body and url and icon and image:
+            if title_en and body_en and url and icon and image:
                 url = _decorate_url(url)
                 if not _validate_url(url):
                     return render(request, 'products/create.html', {'error': _('url_error')})
 
                 product = Product()
-                product.title = title
-                product.body = body
+                product.title_en = title_en
+                product.body_en = body_en
+                product.title_ru = title_ru
+                product.body_ru = body_ru
                 product.url = url
                 product.icon = icon
                 product.image = image

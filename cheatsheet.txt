@@ -6,3 +6,8 @@ cd locale
 python ../manage.py makemessages -l=ru -e=html
 python ../manage.py makemessages -l=en -e=html
 python ../manage.py compilemessages
+
+
+superuser for local test db:
+    - username: admin
+    - password: admin

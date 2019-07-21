@@ -101,10 +101,3 @@ Django admin panel is supported. There are possibilities to manage users and pro
 Translations managing is also supported.
 
 ![Admin_project_detail](screenshots/admin_project_detail.png)
-
-# Upwork
-
-This project is part of my Upwork portfolio.
-Please check my [Upwork profile](https://www.upwork.com/o/profiles/users/_~010104bbdffc992d66/?s=1110580748673863680) in order to reach to other projects.
-
-Btw, I'm available for freelance work! 
